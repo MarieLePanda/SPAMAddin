@@ -1,0 +1,2 @@
+bin\Debug\app.publish\OfficeAppManifests\UCB-SPAMAddinManifest.xml
+C:\Users\lugirard\source\repos\UCB-SPAMAddin\UCB-SPAMAddin\bin\Debug\app.publish\UCB-SPAMAddin.app

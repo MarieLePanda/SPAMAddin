@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!--Created:ce44715c-8c4e-446b-879c-ea9ebe0f09c8-->
+<OfficeApp
+          xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
+          xmlns:mailappor="http://schemas.microsoft.com/office/mailappversionoverrides/1.0"
+          xsi:type="MailApp">
+
+  <!-- Début des paramètres de base : métadonnées de complément utilisées pour toutes les versions d'Office, sauf en cas de substitution. -->
+
+  <!-- IMPORTANT ! L'ID doit être unique pour votre complément. Si vous réutilisez ce manifeste, veillez à remplacer cet ID par un nouveau GUID. -->
+  <Id>f0f2f4ea-8258-4c47-99a5-5262e9e38a20</Id>
+
+  <!--Version. Les mises à jour du Windows Store ne se déclenchent qu'en cas de changement de version. -->
+  <Version>1.0.0.0</Version>
+  <ProviderName>Microsoft</ProviderName>
+  <DefaultLocale>en-US</DefaultLocale>
+  <!-- Nom d'affichage de votre complément. Utilisé dans le Store et à divers endroits de l'interface utilisateur Office, par exemple la boîte de dialogue des compléments. -->
+  <DisplayName DefaultValue="UCB-SPAMAddin" />
+  <Description DefaultValue="UCB-SPAMAddin"/>
+  <IconUrl DefaultValue="~remoteAppUrl/Images/icon64.png"/>
+
+  <SupportUrl DefaultValue="http://www.contoso.com" />
+  <!-- Domaines autorisés durant la navigation. Par exemple, si vous utilisez ShowTaskpane et un lien href, la navigation n'est autorisée que si le domaine figure sur cette liste. -->
+  <AppDomains>
+    <AppDomain>AppDomain1</AppDomain>
+    <AppDomain>AppDomain2</AppDomain>
+    <AppDomain>AppDomain3</AppDomain>
+  </AppDomains>
+  <!--Fin des paramètres de base. -->
+
+  <Hosts>
+    <Host Name="Mailbox" />
+  </Hosts>
+  <Requirements>
+    <Sets>
+      <Set Name="Mailbox" MinVersion="1.1" />
+    </Sets>
+  </Requirements>
+  <FormSettings>
+    <Form xsi:type="ItemRead">
+      <DesktopSettings>
+        <SourceLocation DefaultValue="~remoteAppUrl/MessageRead.html"/>
+        <RequestedHeight>250</RequestedHeight>
+      </DesktopSettings>
+    </Form>
+  </FormSettings>
+
+  <Permissions>ReadWriteMailbox</Permissions>
+  <Rule xsi:type="RuleCollection" Mode="Or">
+    <Rule xsi:type="ItemIs" ItemType="Message" FormType="Read" />
+  </Rule>
+  <DisableEntityHighlighting>false</DisableEntityHighlighting>
+
+  <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides" xsi:type="VersionOverridesV1_0">
+    <Requirements>
+      <bt:Sets DefaultMinVersion="1.3">
+        <bt:Set Name="Mailbox" />
+      </bt:Sets>
+    </Requirements>
+    <Hosts>
+      <Host xsi:type="MailHost">
+
+        <DesktopFormFactor>
+          <!-- Emplacement des fonctions que les boutons sans IU (interface utilisateur) peuvent déclencher (actions ExecuteFunction). -->
+          <FunctionFile resid="functionFile" />
+
+          <!-- Message lu -->
+          <ExtensionPoint xsi:type="MessageReadCommandSurface">
+            <!-- Utilisez l'onglet par défaut de ExtensionPoint, ou créez votre propre onglet avec <CustomTab id="myTab"> -->
+            <OfficeTab id="TabDefault">
+              <!-- Jusqu'à 6 groupes ajoutés par onglet -->
+              <Group id="msgReadGroup">
+                <Label resid="groupLabel" />
+                <!-- Command -->
+                <Control xsi:type="Button" id="msgComposeFunctionButton">
+                  <Label resid="funcComposeButtonLabel" />
+                  <Supertip>
+                    <Title resid="funcComposeSuperTipTitle" />
+                    <Description resid="funcComposeSuperTipDescription" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="icon16" />
+                    <bt:Image size="32" resid="icon32" />
+                    <bt:Image size="80" resid="icon80" />
+                  </Icon>
+                  <Action xsi:type="ExecuteFunction">
+                    <FunctionName>startAddin</FunctionName>
+                  </Action>
+                </Control>
+                <!-- Pour apprendre à ajouter des contrôles supplémentaires, notamment ExecuteFunction et Menu, accédez à http://aka.ms/ButtonCommands -->
+              </Group>
+            </OfficeTab>
+          </ExtensionPoint>
+          <!-- Pour apprendre à ajouter des points d'extension supplémentaires, notamment MessageRead, AppointmentOrganizer, AppointmentAttendee, accédez à http://aka.ms/ExtensionPointsCommands -->
+        </DesktopFormFactor>
+      </Host>
+    </Hosts>
+
+    <Resources>
+      <bt:Images>
+        <bt:Image id="icon16" DefaultValue="~remoteAppUrl/Images/icon16.png"/>
+        <bt:Image id="icon32" DefaultValue="~remoteAppUrl/Images/icon32.png"/>
+        <bt:Image id="icon80" DefaultValue="~remoteAppUrl/Images/icon80.png"/>
+      </bt:Images>
+      <bt:Urls>
+        <bt:Url id="functionFile" DefaultValue="~remoteAppUrl/Functions/FunctionFile.html"/>
+        <bt:Url id="messageReadTaskPaneUrl" DefaultValue="~remoteAppUrl/MessageRead.html"/>
+      </bt:Urls>
+      <bt:ShortStrings>
+        <!-- Compose mode -->
+        <bt:String id="funcComposeButtonLabel" DefaultValue="Report suspicious mail"/>
+        <bt:String id="funcComposeSuperTipTitle" DefaultValue="Report suspicious E-mail"/>
+
+        <bt:String id="groupLabel" DefaultValue="Report Spam"/>
+        <bt:String id="customTabLabel"  DefaultValue=" "/>
+        <bt:String id="paneReadButtonLabel" DefaultValue="paneReadButtonLabel to complete"/>
+        <bt:String id="paneReadSuperTipTitle" DefaultValue="paneReadSuperTipTitle to complete"/>
+      </bt:ShortStrings>
+      <bt:LongStrings>
+        <bt:String id="funcComposeSuperTipDescription" DefaultValue="Use this to report a suspicious or a spam E-mail to IT Security Operations team"/>
+        <bt:String id="paneReadSuperTipDescription" DefaultValue="paneReadSuperTipDescription to complete"/>
+      </bt:LongStrings>
+    </Resources>
+  </VersionOverrides>
+</OfficeApp>
